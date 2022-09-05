@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+    <title>Kanban</title>
+    <meta http-equiv="Cache-Control" content="no-store">
+    <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <link rel="icon" type="image/png" href="kanban_icon.png" />
+    <link rel="stylesheet" href="style.css" />
+    <base target="_blank">
+</head>
+<body>
+    <div id="container">
+        <div id="container-main">
+            <div class="pane" id="todo">To Do</div>
+            <div class="pane" id="doing">Doing</div>
+            <div class="pane" id="done">Done</div>
+        </div>
+        <div id="container-stock"></div>
+    </div>
+    <div id="scroll"><img src="arrow.svg" alt="v"></div>
+    <div id="license"><img src="licenses.svg" alt="" title="3rd Party Licenses"></div>
+    <div id="tasks"></div>
+    <ul id="menu" class="menu">
+        <li id="menu-red" class="menu-item color red" data-color="red" data-key="Digit1">Red<span class="key-bind">1</span></li>
+        <li id="menu-orange" class="menu-item color orange" data-color="orange" data-key="Digit2">Orange<span class="key-bind">2</span></li>
+        <li id="menu-yellow" class="menu-item color yellow" data-color="yellow" data-key="Digit3">Yellow<span class="key-bind">3</span></li>
+        <li id="menu-green" class="menu-item color green" data-color="green" data-key="Digit4">Green<span class="key-bind">4</span></li>
+        <li id="menu-blue" class="menu-item color blue" data-color="blue" data-key="Digit5">Blue<span class="key-bind">5</span></li>
+        <li id="menu-indigo" class="menu-item color indigo" data-color="indigo" data-key="Digit6">Indigo<span class="key-bind">6</span></li>
+        <li id="menu-purple" class="menu-item color purple" data-color="purple" data-key="Digit7">Purple<span class="key-bind">7</span></li>
+        <li id="menu-white" class="menu-item color white" data-color="white" data-key="Digit8">White<span class="key-bind">8</span></li>
+        <li id="menu-black" class="menu-item color black" data-color="black" data-key="Digit9">Black<span class="key-bind">9</span></li>
+        <li id="menu-tofront" class="menu-item white" data-key="KeyZ"><img src="tofront.svg" alt="">To Front<span class="key-bind">Z</span></li>
+        <li id="menu-move" class="menu-item white" data-key="KeyN"><img src="updown.svg" alt="">Move<span class="key-bind">N</span></li>
+        <li id="menu-delete" class="menu-item white" data-key="Delete"><img src="delete.svg" alt="">Delete<span class="key-bind">Del</span></li>
+    </ul>
+    <script src="script.js" type="module"></script>
+</body>
+</html>
