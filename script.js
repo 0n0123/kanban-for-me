@@ -24,7 +24,7 @@ const db = new class {
      * @returns {Promise<object[]>}
      */
     async getAll() {
-        const tasks = this.table.toArray();
+        const tasks = await this.table.toArray();
         tasks.sort((t1, t2) => t1.zindex - t2.zindex);
         return tasks;
     }
