@@ -110,7 +110,7 @@ class Task {
     }
 
     static async create(option) {
-        let { id = '', top = 0, left = 0, text = '', color = '' } = option;
+        let { id = '', top = 0, left = 0, text = '', color = 'white' } = option;
         if (!id) {
             const added = await db.add(option);
             let { id, top, left, text, color } = added;
