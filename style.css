@@ -1,6 +1,6 @@
 :root {
-    --color-tel-cyan: hsl(194, 100%, 43%);
-    --color-tel-green: hsl(86, 71%, 43%);
+    --color-cyan: hsl(199, 100%, 43%);
+    --color-green: hsl(96, 71%, 43%);
     --color-background: hsl(30, 30%, 96%);
     --task-border-width: .1rem;
     --color-red: hsl(326, 80%, 80%);
@@ -77,7 +77,7 @@ body {
     display: flex;
     flex-direction: row;
     scroll-snap-type: y mandatory;
-    border-bottom: 1px solid var(--color-tel-cyan);
+    border-bottom: 1px solid var(--color-cyan);
 }
 
 .pane {
@@ -92,15 +92,15 @@ body {
 }
 
 .pane+.pane {
-    border-left: 1px var(--color-tel-cyan) solid;
+    border-left: 1px var(--color-cyan) solid;
 }
 
 .pane:nth-child(odd) {
-    color: var(--color-tel-cyan);
+    color: var(--color-cyan);
 }
 
 .pane:nth-child(even) {
-    color: var(--color-tel-green);
+    color: var(--color-green);
 }
 
 #container-stock {
@@ -149,7 +149,7 @@ body {
 .task a:link,
 .task a:visited,
 .task a:active {
-    color: var(--color-tel-cyan);
+    color: var(--color-cyan);
 }
 
 .task hr {
@@ -266,10 +266,15 @@ textarea:focus {
     display: none;
 }
 
+#system-menu {
+    top: 1.4rem;
+    right: 0;
+}
+
 .menu {
+    position: absolute;
     color: var(--color-text);
     background-color: var(--color-white);
-    position: absolute;
     width: 8em;
     visibility: hidden;
     box-shadow: .1em .1em .2em -.1em rgba(0, 0, 0, 0.2);
@@ -380,42 +385,26 @@ textarea:focus {
 }
 
 @media (prefers-color-scheme: dark) {
-    #scroll>img {
+    #scroll>img,
+    #system-menu-icon>img {
         filter: invert(100%);
     }
 }
 
-#license {
+#system-menu-icon {
     position: fixed;
-    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 1.6em;
+    top: .2em;
     right: 0;
     cursor: pointer;
 }
 
-#license>img {
+#system-menu-icon>img {
     display: block;
     max-width: 1.2em;
     min-width: 1.2em;
-}
-
-#status {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    margin: .3vh .3vw;
-    font-size: .5rem;
-    user-select: none;
-    color: hsl(86, 71%, 70%);
-}
-
-#status::before {
-    content: 'Connected';
-}
-
-#status.disconnected {
-    color: hsl(326, 80%, 70%);
-}
-
-#status.disconnected::before {
-    content: 'Disconnected';
 }

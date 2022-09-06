@@ -20,9 +20,11 @@ Copyright (c) 2018 - 2021 Simon Reinisch
 
 © 2014-2021 Dexie.js is the creation of David Fahlander.
 
-### OpenMoji
+### [Tabler Icons](https://tabler-icons.io/)
 
-All emojis designed by <a href="https://openmoji.org/" target="_blank">OpenMoji</a> – the open-source emoji and icon project. License: CC BY-SA 4.0
+[The MIT License (MIT)](#MIT)
+
+Copyright (c) 2020-2022 Paweł Kuna
 
 ## License texts
 

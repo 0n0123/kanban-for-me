@@ -27,18 +27,23 @@ const db = new class {
         return this.table.toArray();
     }
 
-    async add(top, left) {
+    async add(option) {
         const id = this.#createId();
         const zindex = await this.getAll().then(records => records.length ? Math.max(...records.map(r => r.zindex)) : 0);
+        const { top = 0, left = 0, text = '', color = 'white' } = option;
         this.table.add({
             id,
-            color: 'white',
-            text: '',
+            color,
+            text,
             top,
             left,
             zindex: zindex + 1
         });
-        return id;
+        return {
+            ...option,
+            zindex,
+            id
+        };
     }
 
     /**
@@ -73,7 +78,8 @@ const db = new class {
     }
 
     #createId() {
-        return new Date().getTime().toString(16);
+        const random =  Array(3).fill(0).map(_ => Math.floor(Math.random() * 16).toString(16)).join('');
+        return new Date().getTime().toString(16) + random;
     }
 }();
 
@@ -106,24 +112,22 @@ class Task {
     static async create(option) {
         let { id = '', top = 0, left = 0, text = '', color = '' } = option;
         if (!id) {
-            id = await db.add(top, left);
+            const added = await db.add(option);
+            let { id, top, left, text, color } = added;
         }
-        const txt = text || '';
-        const col = color || 'white';
         const newTask = document.createElement('div');
         newTask.style.top = top + '%';
         newTask.style.left = left + '%';
         newTask.classList.add(CLASS_TASK);
-        newTask.classList.add(col);
+        newTask.classList.add(color);
         newTask.id = id;
         const displayText = document.createElement('div');
         displayText.className = 'display-text';
-        // @ts-ignore
-        displayText.innerHTML = marked.parse(txt);
+        displayText.innerHTML = marked.parse(text);
         newTask.appendChild(displayText);
         const textarea = document.createElement('textarea');
         textarea.placeholder = 'Press Ctrl+Enter or Ctrl+Alt+Enter to start a new line,\nCtrl+Shift+Enter to input a hover comment.';
-        textarea.value = txt;
+        textarea.value = text;
         newTask.appendChild(textarea);
         $tasks.appendChild(newTask);
         const instance = new Task(id);
@@ -358,13 +362,9 @@ document.onkeyup = e => {
     }
     Menu.hide();
 };
-document.onclick = _ => Menu.hide();
-
-document.getElementById('license').onclick = async _ => {
-    const popup = window.open('about:blank', '_blank');
-    popup.document.title = 'Kanban - 3rd Party Licenses';
-    const data = await fetch('LICENSES.md').then(res => res.text());
-    popup.document.body.innerHTML = marked.parse(data);
+document.onclick = _ => {
+    Menu.hide();
+    SystemMenu.hide();
 };
 
 const selection = new SelectionArea({
@@ -504,3 +504,72 @@ const Scroll = new class {
     }
 }();
 
+const SystemMenu = new class {
+    elm = document.getElementById('system-menu');
+    icon = document.getElementById('system-menu-icon');
+
+    constructor() {
+        this.icon.onclick = e => this.show(e);
+        document.getElementById('menu-license').onclick = this.showLicense;
+        document.getElementById('menu-export').onclick = this.export;
+        document.getElementById('menu-import').onclick = this.import;
+    }
+
+    show(e) {
+        this.elm.classList.add('show');
+        e.stopPropagation();
+    }
+
+    hide() {
+        this.elm.classList.remove('show');
+    }
+
+    async export() {
+        const tasks = await db.getAll();
+        const exported = tasks.map(task => {
+            const ret = task;
+            delete ret.id;
+            return ret;
+        });
+        const blob = new Blob([ JSON.stringify(exported, null, 2) ], { type: 'application/json' });
+        let anchor = document.getElementById('export-anchor');
+        if (!anchor) {
+            anchor = document.createElement('a');
+            anchor.style.display = 'none';
+            anchor.id = 'export-link';
+            document.body.appendChild(anchor);
+            anchor.download = 'kanban.json';
+        }
+        anchor.href = URL.createObjectURL(blob);
+        anchor.click();
+    }
+
+    import() {
+        let input = document.getElementById('import-input');
+        if (!input) {
+            input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'application/json';
+            input.style.display = 'none';
+            input.onchange = e => {
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = contents => {
+                    const tasks = JSON.parse(contents.target.result);
+                    for (const task of tasks) {
+                        Task.create(task);
+                    }
+                };
+                reader.readAsText(file);
+            };
+        }
+        input.click();
+    }
+
+    async showLicense() {
+        const popup = window.open('about:blank', '_blank');
+        popup.document.title = 'Kanban - 3rd Party Licenses';
+        const data = await fetch('LICENSES.md').then(res => res.text());
+        popup.document.body.innerHTML = marked.parse(data);
+    }
+}();
