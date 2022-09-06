@@ -23,8 +23,10 @@ const db = new class {
     /**
      * @returns {Promise<object[]>}
      */
-    getAll() {
-        return this.table.toArray();
+    async getAll() {
+        const tasks = this.table.toArray();
+        tasks.sort((t1, t2) => t1.zindex - t2.zindex);
+        return tasks;
     }
 
     async add(option) {
@@ -526,6 +528,7 @@ const SystemMenu = new class {
         const exported = tasks.map(task => {
             const ret = task;
             delete ret.id;
+            delete ret.zindex;
             return ret;
         });
         const blob = new Blob([ JSON.stringify(exported, null, 2) ], { type: 'application/json' });
