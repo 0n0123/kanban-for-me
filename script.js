@@ -110,11 +110,8 @@ class Task {
     }
 
     static async create(option) {
-        let { id = '', top = 0, left = 0, text = '', color = 'white' } = option;
-        if (!id) {
-            const added = await db.add(option);
-            let { id, top, left, text, color } = added;
-        }
+        const opt = option.id ? option : await db.add(option);
+        const { id = '', top = 0, left = 0, text = '', color = 'white' } = opt;
         const newTask = document.createElement('div');
         newTask.style.top = top + '%';
         newTask.style.left = left + '%';
