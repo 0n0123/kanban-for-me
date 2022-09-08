@@ -1,6 +1,6 @@
 :root {
     --color-cyan: hsl(199, 100%, 43%);
-    --color-green: hsl(96, 71%, 43%);
+    --color-strong-green: hsl(96, 71%, 43%);
     --color-background: hsl(30, 30%, 96%);
     --task-border-width: .1rem;
     --color-red: hsl(326, 80%, 80%);
@@ -100,7 +100,7 @@ body {
 }
 
 .pane:nth-child(even) {
-    color: var(--color-green);
+    color: var(--color-strong-green);
 }
 
 #container-stock {
