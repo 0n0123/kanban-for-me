@@ -2,7 +2,8 @@
 
 かんばんWebアプリ
 
-<video src="./img/operation.mp4" width="640" loop autoplay></video>
+
+https://user-images.githubusercontent.com/17229202/189473178-f48ea86b-b119-4ea3-aec9-41f19586f022.mp4
 
 [今すぐ使ってみる](https://0n0123.github.io/kanban4u/)
 
