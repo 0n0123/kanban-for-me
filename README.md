@@ -2,7 +2,7 @@
 
 かんばんWebアプリ
 
-<video src="./img/operation.mov" width="640" loop autoplay></video>
+<video src="./img/operation.mp4" width="640" loop autoplay></video>
 
 [今すぐ使ってみる](https://0n0123.github.io/kanban4u/)
 
@@ -13,4 +13,4 @@
 
     バックアップや他のPCへのデータ移行が必要な場合は、右上のメニューからエクスポートしたファイルを移行先にインポートしてください。
 
-    ![](./img/system-menu.png)
+    <img src="./img/system-menu.png" style="width: 320px">
