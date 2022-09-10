@@ -138,15 +138,15 @@ class Task {
 
     #registerEventListener() {
         let focused = [];
-        const getMousePosition = event => {
+        const getPointerPosition = event => {
             return {
                 x: (event.pageX / window.innerWidth) * 100,
                 y: (event.pageY / window.innerHeight) * 100
             }
         };
 
-        const mousedown = event => {
-            if (event.ctrlKey) {
+        const pointerdown = event => {
+            if (event.ctrlKey || event.metaKey) {
                 this.elm.classList.toggle(CLASS_FOCUSED);
             } else if (!this.isFocused()) {
                 Task.unfocusAll();
@@ -155,10 +155,10 @@ class Task {
             const focusedTasks = Task.getAllFocused();
             focusedTasks.forEach(focused => focused.elm.classList.add(CLASS_MOVING));
             focused = focusedTasks;
-            document.onmousemove = move;
-            document.onmouseup = drop;
+            document.onpointermove = move;
+            document.onpointerup = drop;
 
-            const mousePos = getMousePosition(event);
+            const mousePos = getPointerPosition(event);
             this.origin.x = mousePos.x;
             this.origin.y = mousePos.y;
             for (const f of focused) {
@@ -173,7 +173,7 @@ class Task {
                 scrolling = Scroll.doScroll();
                 scrolling.then(() => scrolling = null);
             }
-            const mousePos = getMousePosition(event);
+            const mousePos = getPointerPosition(event);
             for (const f of focused) {
                 f.setPosition({
                     left: f.origin.pos.left + (mousePos.x - this.origin.x),
@@ -202,8 +202,8 @@ class Task {
                     top: newTop
                 });
             }
-            document.onmousemove = null;
-            document.onmouseup = null;
+            document.onpointermove = null;
+            document.onpointerup = null;
             focused.length = 0;
         };
 
@@ -217,9 +217,9 @@ class Task {
             comment.style.left = (event.clientX - rect.left) / rect.width * 100 + 1 + '%';
         };
 
-        this.elm.onmousemove = hover;
+        this.elm.onpointermove = hover;
 
-        this.elm.onmousedown = mousedown;
+        this.elm.onpointerdown = pointerdown;
         this.elm.ondblclick = event => this.edit();
 
         this.input.onkeydown = event => {
@@ -246,14 +246,14 @@ class Task {
                 this.elm.classList.remove(CLASS_EDITING);
                 input.value = input.dataset.originalValue;
                 document.onkeyup = Task.#onDocumentKeyUp;
-                this.elm.onmousedown = mousedown;
+                this.elm.onpointerdown = pointerdown;
             }
         };
         this.input.onblur = _ => applyText();
         const applyText = () => {
             this.setText(this.input.value);
             document.onkeyup = Task.#onDocumentKeyUp;
-            this.elm.onmousedown = mousedown;
+            this.elm.onpointerdown = pointerdown;
         };
     }
 
@@ -263,7 +263,7 @@ class Task {
             this.input.dataset.originalValue = this.input.value;
             this.input.style.height = this.elm.getBoundingClientRect().height + 'px';
             document.onkeyup = null;
-            this.elm.onmousedown = null;
+            this.elm.onpointerdown = null;
             this.elm.classList.add(CLASS_EDITING);
             this.input.focus();
         }
@@ -350,7 +350,7 @@ const createTask = e => {
     Task.create({ top, left });
 };
 container.ondblclick = createTask;
-container.onmousedown = _ => Task.unfocusAll();
+container.onpointerdown = _ => Task.unfocusAll();
 document.onkeyup = e => {
     const key = e.code;
     if (key === 'F2') {
@@ -569,7 +569,7 @@ const SystemMenu = new class {
     async showLicense() {
         const popup = window.open('about:blank', '_blank');
         popup.document.title = 'Kanban - 3rd Party Licenses';
-        const data = await fetch('LICENSES.md').then(res => res.text());
+        const data = await fetch('LICENSE.md').then(res => res.text());
         popup.document.body.innerHTML = marked.parse(data);
     }
 }();
