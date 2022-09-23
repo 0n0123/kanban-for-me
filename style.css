@@ -365,46 +365,44 @@ textarea:focus {
     }
 }
 
-#scroll {
+.fixed {
     position: fixed;
-    bottom: 0;
-    left: 0;
     cursor: pointer;
-    transition: transform .1s ease;
     user-select: none;
     width: 1.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fixed>img {
+    display: block;
+    max-width: 100%;
+    min-width: 1.2em;
+}
+
+#scroll {
+    bottom: 0;
+    left: 0;
+    transition: transform .1s ease;
 }
 
 #scroll.on {
     transform: rotate3d(1, 0, 0, 180deg);
 }
 
-#scroll>img {
-    display: block;
-    max-width: 100%;
-}
-
-@media (prefers-color-scheme: dark) {
-    #scroll>img,
-    #system-menu-icon>img {
-        filter: invert(100%);
-    }
+#menu-icon {
+    top: .2em;
+    left: 0;
 }
 
 #system-menu-icon {
-    position: fixed;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    width: 1.6em;
     top: .2em;
     right: 0;
-    cursor: pointer;
 }
 
-#system-menu-icon>img {
-    display: block;
-    max-width: 1.2em;
-    min-width: 1.2em;
+@media (prefers-color-scheme: dark) {
+    .fixed>img {
+        filter: invert(100%);
+    }
 }

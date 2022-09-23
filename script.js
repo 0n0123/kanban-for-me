@@ -436,6 +436,11 @@ const Menu = new class {
             Task.getAllFocused().forEach(t => t.remove());
         };
         document.getElementById('menu-delete').onclick = onDeleteMenuClick;
+
+        document.getElementById('menu-icon').onclick = e => {
+            this.show(e);
+            e.stopPropagation();
+        };
     }
 
     keyCommand(keycode) {
