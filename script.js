@@ -494,7 +494,7 @@ const Scroll = new class {
             }
         };
         this.observer = new IntersectionObserver(onScroll, {
-            threshold: 1
+            threshold: 0.8
         });
         this.observer.observe(document.getElementById('container-main'));
         this.observer.observe(document.getElementById('container-stock'));
