@@ -20,6 +20,7 @@
     --color-focus: hsla(55, 100%, 46%, 0.6);
     --color-mask: rgba(255, 255, 255, .7);
     --color-comment: rgba(150, 150, 155, .5);
+    --color-menu: hsl(0, 0%, 60%);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -274,8 +275,7 @@ textarea:focus {
 .menu {
     position: absolute;
     color: var(--color-text);
-    background-color: var(--color-white);
-    width: 8em;
+    background-color: var(--color-menu);
     visibility: hidden;
     box-shadow: .1em .1em .2em -.1em rgba(0, 0, 0, 0.2);
     user-select: none;
@@ -288,12 +288,38 @@ textarea:focus {
 .menu-item {
     position: relative;
     font-size: .9em;
-    height: 1.6em;
     list-style: none;
-    padding: .1em .2em;
+    padding: .2em;
     cursor: pointer;
     transition: padding 80ms ease;
     overflow: hidden;
+}
+
+.menu-item:hover {
+    padding: .2em 0 .2em .4em;
+}
+
+#menu-colors {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: .3em;
+    width: 10em;
+    transition: none;
+}
+
+#menu-colors:hover {
+    padding: .2em;
+}
+
+.menu-color {
+    width: 1.6em;
+    height: 1.6em;
+    transition: transform 80ms ease;
+}
+
+.menu-color:hover {
+    transform: translateY(-.1em);
 }
 
 .menu-item>img {
@@ -301,25 +327,6 @@ textarea:focus {
     height: 1.5em;
     vertical-align: bottom;
     margin-right: .1em;
-}
-
-.menu-item:hover {
-    padding-left: .5em;
-}
-
-.key-bind {
-    margin-left: .3em;
-    position: relative;
-    text-decoration: underline;
-    font-size: 80%;
-}
-
-.key-bind::before {
-    content: '(';
-}
-
-.key-bind::after {
-    content: ')';
 }
 
 .red {

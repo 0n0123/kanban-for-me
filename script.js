@@ -397,7 +397,7 @@ const Menu = new class {
                 task.setColor(e.currentTarget.dataset.color);
             }
         };
-        this.elm.querySelectorAll('.menu-item.color').forEach(menu => menu.onclick = onColorMenuClick);
+        this.elm.querySelectorAll('.menu-color').forEach(menu => menu.onclick = onColorMenuClick);
 
         const onToFrontMenuClick = () => {
             const focusedTasks = Task.getAllFocused();
