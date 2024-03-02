@@ -20,7 +20,8 @@
     --color-focus: hsla(55, 100%, 46%, 0.6);
     --color-mask: rgba(255, 255, 255, .7);
     --color-comment: rgba(150, 150, 155, .5);
-    --color-menu: hsl(0, 0%, 60%);
+    --color-menu: hsl(0, 0%, 96%);
+    --color-menu-text: var(--color-text);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -35,9 +36,11 @@
         --color-purple: hsl(280, 54%, 30%);
         --color-white: hsl(220, 1%, 72%);
         --color-black: hsl(0, 0%, 34%);
-        --color-text: hsl(60, 3%, 84%);
+        --color-text: hsl(0, 0%, 80%);
         --color-shadow: rgba(0, 0, 0, .4);
         --color-comment: rgba(100, 100, 110, .5);
+        --color-menu: hsl(0, 3%, 64%);
+        --color-menu-text: hsl(0, 0%, 17%);
     }
 }
 
@@ -277,7 +280,7 @@ textarea:focus {
     color: var(--color-text);
     background-color: var(--color-menu);
     visibility: hidden;
-    box-shadow: .1em .1em .2em -.1em rgba(0, 0, 0, 0.2);
+    box-shadow: 0 .1em .3em -.1em rgba(0, 0, 0, 0.2);
     user-select: none;
 }
 
@@ -293,6 +296,7 @@ textarea:focus {
     cursor: pointer;
     transition: padding 80ms ease;
     overflow: hidden;
+    color: var(--color-menu-text);
 }
 
 .menu-item:hover {
@@ -316,6 +320,7 @@ textarea:focus {
     width: 1.6em;
     height: 1.6em;
     transition: transform 80ms ease;
+    color: var(--color-text);
 }
 
 .menu-color:hover {

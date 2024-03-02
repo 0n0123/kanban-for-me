@@ -3,7 +3,6 @@ import SelectionArea from 'https://cdn.jsdelivr.net/npm/@viselect/vanilla@3.1.0/
 import { marked } from 'https://cdnjs.cloudflare.com/ajax/libs/marked/4.1.0/lib/marked.esm.js';
 
 const $tasks = document.getElementById('tasks');
-const CLASS_TASK = 'task';
 const CLASS_FOCUSED = 'focused';
 const CLASS_EDITING = 'editing';
 const CLASS_MOVING = 'moving';
@@ -114,20 +113,17 @@ class Task {
     static async create(option) {
         const opt = option.id ? option : await db.add(option);
         const { id = '', top = 0, left = 0, text = '', color = 'white' } = opt;
-        const newTask = document.createElement('div');
+
+        const template = document.getElementById('task-template').content.cloneNode(true);
+        const newTask = template.querySelector('.task');
         newTask.style.top = top + '%';
         newTask.style.left = left + '%';
-        newTask.classList.add(CLASS_TASK);
         newTask.classList.add(color);
         newTask.id = id;
-        const displayText = document.createElement('div');
-        displayText.className = 'display-text';
+        const displayText = template.querySelector('.display-text');
         displayText.innerHTML = marked.parse(text);
-        newTask.appendChild(displayText);
-        const textarea = document.createElement('textarea');
-        textarea.placeholder = 'Press Ctrl+Enter or Ctrl+Alt+Enter to start a new line,\nCtrl+Shift+Enter to input a hover comment.';
+        const textarea = template.querySelector('textarea');
         textarea.value = text;
-        newTask.appendChild(textarea);
         $tasks.appendChild(newTask);
         const instance = new Task(id);
         instance.#registerEventListener();
@@ -167,8 +163,8 @@ class Task {
         };
         let scrolling = null;
         const move = event => {
-            if ((event.clientY >= window.innerHeight && window.pageYOffset === 0) ||
-                (event.clientY <= 0 && window.pageYOffset > 0) &&
+            if ((event.clientY >= window.innerHeight && window.scrollY === 0) ||
+                (event.clientY <= 0 && window.scrollY > 0) &&
                 scrolling === null) {
                 scrolling = Scroll.doScroll();
                 scrolling.then(() => scrolling = null);
@@ -345,7 +341,7 @@ for (const task of await db.getAll()) {
 
 const container = document.getElementById('container');
 const createTask = e => {
-    const top = (e.clientY + window.pageYOffset) / document.documentElement.clientHeight * 100;
+    const top = (e.clientY + window.scrollY) / document.documentElement.clientHeight * 100;
     const left = (e.clientX / document.documentElement.clientWidth) * 100;
     Task.create({ top, left });
 };
@@ -385,7 +381,7 @@ const Menu = new class {
     constructor() {
         this.elm = document.getElementById('menu');
 
-        this.binds = Array.from(document.getElementsByClassName('menu-item'))
+        this.binds = Array.from(this.elm.querySelectorAll('*[data-key]'))
             .map(m => ({
                 key: m.dataset.key,
                 func: _ => m.click()
@@ -417,9 +413,9 @@ const Menu = new class {
         const onMoveMenuClick = () => {
             const focused = Task.getAllFocused();
             const pos = focused[0].getPosition();
-            if (pos.top < 100 && window.pageYOffset === 0) {
+            if (pos.top < 100 && window.scrollY === 0) {
                 Scroll.doScroll(1);
-            } else if (pos.top >= 100 && window.pageYOffset > 0) {
+            } else if (pos.top >= 100 && window.scrollY > 0) {
                 Scroll.doScroll(0);
             }
             for (const task of focused) {
@@ -454,11 +450,11 @@ const Menu = new class {
         const innerHeight = window.innerHeight;
         const innerWidth = window.innerWidth;
         if (y + this.elm.offsetHeight > innerHeight) {
-            this.elm.style.bottom = (innerHeight - y - window.pageYOffset) + 'px';
+            this.elm.style.bottom = (innerHeight - y - window.scrollY) + 'px';
             this.elm.style.top = 'auto';
         } else {
             this.elm.style.bottom = 'auto';
-            this.elm.style.top = y + window.pageYOffset + 'px';
+            this.elm.style.top = y + window.scrollY + 'px';
         }
         if (x + this.elm.offsetWidth > innerWidth) {
             this.elm.style.right = (innerWidth - x) + 'px';
@@ -502,7 +498,7 @@ const Scroll = new class {
 
     doScroll(to) {
         const y = (to && document.documentElement.clientHeight) ||
-            (window.pageYOffset > 0 ? 0 : document.documentElement.clientHeight);
+            (window.scrollY > 0 ? 0 : document.documentElement.clientHeight);
         window.scroll(0, y);
         return new Promise(r => this.#resolve = r);
     }
